@@ -1,0 +1,73 @@
+// عبارات وجملات فكاهية مصرية
+export const egyptianHumor = [
+  'الخروف استرخى!',
+  'ده حظك يا معم',
+  'إن شاء الله العيدية تكفيك',
+  'الحمد لله على كل حال',
+  'يلا يا معم ركز شوية',
+  'شد الحيل يا سيادتك',
+  'إن شاء الله العام الجاي أكتر',
+  'ما تقلش في الحظ',
+  'الخروف ده شنب!',
+  'يا لا الإجابة الصحيحة',
+  'بروح بروح على الخروف',
+  'تمام التمام يا معم',
+];
+
+// الرسائل الاحتفالية
+export const celebrationMessages = [
+  'ألف مبروك! استحقيت العيدية دي',
+  'كل عام وأنت بألف خير وحبيبة الله أليف',
+  'الحمد لله على التوفيق يا بطل',
+  'ما شاء الله! إجابة صحيحة جداً',
+  'يا إلهي الذكاء ده منين!',
+  'ده فعلاً من أذكى الإجابات اللي شُفت',
+  'استحقيت بجدارة يا معلم',
+  'الله يحفظك بدل ما يحفظك',
+  'تمام تمام يا سيادتك',
+  'شُفت ده تفهم في الدين!',
+];
+
+// رسائل الخطأ الطريفة
+export const funnyErrorMessages = [
+  'آه يا معم! الإجابة دي من تاني',
+  'برافو على المحاولة يا معم!',
+  'حاول تاني - الحظ جاي قريب',
+  'خطأ - بس حظك يتحسن',
+  'ممممم... معلش جرب تاني',
+  'صح يا معم؟ لا طبعاً!',
+  'كويس جداً لكن مش الإجابة الصحيحة',
+  'فاتتك هاي المرة - حاول تاني',
+];
+
+// الفئات والقيم المتعلقة بالعيد
+export const easterQuantities = [
+  { value: 5, label: 'خمسة جنيهات' },
+  { value: 10, label: 'عشرة جنيهات' },
+  { value: 20, label: 'عشرين جنيه' },
+  { value: 50, label: 'خمسين جنيه' },
+  { value: 100, label: 'مائة جنيه' },
+  { value: 200, label: 'مائتي جنيه' },
+];
+
+export function getRandomHumor(): string {
+  return egyptianHumor[Math.floor(Math.random() * egyptianHumor.length)];
+}
+
+export function getRandomCelebration(): string {
+  return celebrationMessages[Math.floor(Math.random() * celebrationMessages.length)];
+}
+
+export function getRandomFunnyError(): string {
+  return funnyErrorMessages[Math.floor(Math.random() * funnyErrorMessages.length)];
+}
+
+export function formatMoney(amount: number): string {
+  return `${amount} جنيه مصري`;
+}
+
+export function getDifficultyByAmount(amount: number): 'easy' | 'medium' | 'hard' {
+  if (amount <= 20) return 'easy';
+  if (amount <= 100) return 'medium';
+  return 'hard';
+}
