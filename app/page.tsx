@@ -23,7 +23,7 @@ export default function Page() {
           </div>
           <Link href="/admin">
             <Button className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-bold">
-              منطقة المدير
+              ابدأ الآن
             </Button>
           </Link>
         </div>
@@ -37,10 +37,10 @@ export default function Page() {
           <div className="text-center space-y-10 max-w-4xl mx-auto">
             {/* Main Title */}
             <div className="space-y-4">
-              <h1 className="text-5xl md:text-7xl font-bold text-amber-950 leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-amber-950 leading-tight">
                 عيدية وفرحة
               </h1>
-              <p className="text-2xl md:text-3xl text-amber-700 font-semibold">
+              <p className="text-xl sm:text-2xl md:text-3xl text-amber-700 font-semibold">
                 بروح العيد وقيم الإسلام
               </p>
             </div>
@@ -75,10 +75,10 @@ export default function Page() {
       <section className="py-20 bg-white/70 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center mb-16 space-y-4">
-            <h2 className="text-4xl md:text-5xl font-bold text-amber-950">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-amber-950">
               حكمة العيد والعطاء
             </h2>
-            <p className="text-xl text-amber-800/70 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-amber-800/70 max-w-2xl mx-auto">
               آيات قرآنية وأحاديث شريفة عن قيمة الإنفاق والعطاء للأطفال
             </p>
           </div>
@@ -152,7 +152,7 @@ export default function Page() {
       <section className="py-20 bg-gradient-to-b from-orange-50 to-amber-50">
         <div className="mx-auto max-w-4xl px-6">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-amber-950 mb-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-amber-950 mb-4">
               قصة العيد الكبير
             </h2>
             <p className="text-xl text-amber-800/70">
@@ -186,7 +186,7 @@ export default function Page() {
       <section className="py-20 bg-white/70 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center mb-16 space-y-4">
-            <h2 className="text-4xl md:text-5xl font-bold text-amber-950">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-amber-950">
               خطوات الاستخدام
             </h2>
             <p className="text-xl text-amber-800/70">
@@ -247,7 +247,7 @@ export default function Page() {
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-amber-600 via-orange-600 to-amber-600">
         <div className="mx-auto max-w-4xl px-6 text-center text-white space-y-8">
-          <h2 className="text-4xl md:text-5xl font-bold leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
             هل أنت جاهز تخليهم يبسموا؟
           </h2>
           <p className="text-xl opacity-95 max-w-2xl mx-auto leading-relaxed">

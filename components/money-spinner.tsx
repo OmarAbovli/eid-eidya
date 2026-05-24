@@ -65,7 +65,7 @@ export function MoneySpinner({
   return (
     <div className="flex flex-col items-center justify-center gap-8">
       {/* Wheel Container */}
-      <div className="relative w-80 h-80 md:w-96 md:h-96">
+      <div className="relative w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96">
         {/* Spinner */}
         <div
           ref={containerRef}

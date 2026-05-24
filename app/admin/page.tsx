@@ -17,7 +17,7 @@ export default function AdminPage() {
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-amber-950 mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-amber-950 mb-2">
             عيدية وفرحة
           </h1>
           <p className="text-amber-700">
@@ -27,14 +27,14 @@ export default function AdminPage() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-amber-200">
-            <TabsTrigger value="create" className="text-amber-950">
+          <TabsList className="grid w-full grid-cols-3 bg-amber-200 min-h-[44px]">
+            <TabsTrigger value="create" className="text-amber-950 text-xs sm:text-sm">
               إنشاء خطة جديدة
             </TabsTrigger>
-            <TabsTrigger value="public" className="text-amber-950">
+            <TabsTrigger value="public" className="text-amber-950 text-xs sm:text-sm">
               الخطط المشاركة
             </TabsTrigger>
-            <TabsTrigger value="sessions" className="text-amber-950">
+            <TabsTrigger value="sessions" className="text-amber-950 text-xs sm:text-sm">
               الجلسات
             </TabsTrigger>
           </TabsList>

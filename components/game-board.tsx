@@ -111,10 +111,10 @@ export default function GameBoard({ onSheepClick }: GameBoardProps) {
         {/* Instructions Card */}
         <div className="absolute bottom-8 left-0 right-0 mx-auto max-w-2xl z-20">
           <div className="bg-white/90 backdrop-blur-sm border-2 border-amber-300 rounded-2xl p-6 shadow-lg text-center">
-            <p className="text-2xl md:text-3xl font-bold text-amber-950 mb-2">
+            <p className="text-xl md:text-3xl font-bold text-amber-950 mb-2">
               اضغط على الخروف
             </p>
-            <p className="text-amber-700 text-lg">
+            <p className="text-amber-700 text-base md:text-lg">
               ثم أجب على السؤال الديني بشكل صحيح لتحصل على العيدية
             </p>
           </div>

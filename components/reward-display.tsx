@@ -85,7 +85,7 @@ export default function RewardDisplay({
          </div>
 
         {/* Content */}
-        <div className="p-8 md:p-12 space-y-8">
+        <div className="p-4 sm:p-8 md:p-12 space-y-8">
           {/* Spinner Mode */}
           {displayMode === 'reveal' && (
             revealMode === 'spinner' ? (
@@ -94,7 +94,7 @@ export default function RewardDisplay({
               <MoneyCounter targetAmount={amount} denominations={allDenominations} duration={2800} />
             ) : (
               <div className="mx-auto max-w-md [perspective:1000px]">
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {[0, 1, 2].map((cardIndex) => {
                     const isPicked = pickedCard === cardIndex;
 
@@ -104,7 +104,7 @@ export default function RewardDisplay({
                         type="button"
                         disabled={pickedCard !== null}
                         onClick={() => setPickedCard(cardIndex)}
-                        className="relative h-52 rounded-2xl text-white [transform-style:preserve-3d] transition-all duration-700 hover:-translate-y-2 hover:scale-105 disabled:hover:translate-y-0 disabled:hover:scale-100"
+                        className="relative h-40 sm:h-52 rounded-2xl text-white [transform-style:preserve-3d] transition-all duration-700 hover:-translate-y-2 hover:scale-105 disabled:hover:translate-y-0 disabled:hover:scale-100"
                         style={{
                           transform: isPicked ? 'rotateY(180deg) scale(1.06)' : 'rotateY(0deg)',
                           opacity: pickedCard !== null && !isPicked ? 0.35 : 1,
@@ -121,7 +121,7 @@ export default function RewardDisplay({
                         </div>
                         <div className="absolute inset-0 rounded-2xl border-2 border-amber-300 bg-gradient-to-br from-amber-500 via-orange-500 to-yellow-500 p-4 [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col items-center justify-center shadow-2xl">
                           <p className="text-xs opacity-90">العيدية</p>
-                          <div className="mt-2 text-4xl font-black tabular-nums">
+                          <div className="mt-2 text-2xl sm:text-4xl font-black tabular-nums">
                             {amount}
                           </div>
                           <p className="mt-1 text-sm opacity-90">جنيه</p>
@@ -141,7 +141,7 @@ export default function RewardDisplay({
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 rounded-3xl blur-2xl opacity-40 animate-pulse" />
                 <div className="relative bg-gradient-to-br from-amber-500 to-orange-600 rounded-3xl px-12 py-8 shadow-2xl border-2 border-amber-300">
-                  <div className="text-6xl md:text-7xl font-bold text-white">
+                  <div className="text-4xl sm:text-5xl md:text-7xl font-bold text-white">
                     {amount}
                   </div>
                   <div className="text-2xl text-amber-100 mt-2">جنيه مصري</div>

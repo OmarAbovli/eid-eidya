@@ -202,7 +202,7 @@ function PlayPageContent() {
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-amber-950 mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-amber-950 mb-2">
             كل عام وأنتم بألف خير
           </h1>
           <p className="text-amber-700 text-lg">{plan.name}</p>
@@ -254,8 +254,8 @@ function PlayPageContent() {
         )}
 
         {/* Session Stats */}
-        <div className="mt-8 bg-white rounded-lg border-2 border-amber-300 p-4">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+          <div className="mt-8 bg-white rounded-lg border-2 border-amber-300 p-4">
+          <div className="grid grid-cols-3 gap-2 text-center">
             <div>
               <p className="text-amber-700 font-semibold">عدد فرحات العيد</p>
               <p className="text-2xl font-bold text-amber-950">{session.children_count}</p>

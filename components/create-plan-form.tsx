@@ -125,7 +125,7 @@ export default function CreatePlanForm() {
       </div>
 
       {/* Total Amount */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="totalAmount" className="text-amber-950 font-semibold">
             إجمالي المبلغ (جنيه)
@@ -166,7 +166,7 @@ export default function CreatePlanForm() {
               key={denom}
               type="button"
               onClick={() => toggleDenomination(denom)}
-              className={`p-3 rounded-lg font-bold text-sm transition-all ${
+              className={`p-3 min-h-[44px] rounded-lg font-bold text-sm transition-all ${
                 formData.selectedDenominations.includes(denom)
                   ? 'bg-amber-600 text-white shadow-lg'
                   : 'bg-amber-100 text-amber-800 border-2 border-amber-300'
