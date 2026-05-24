@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MoneySpinner } from '@/components/money-spinner';
 import { MoneyCounter } from '@/components/money-counter';
@@ -26,9 +26,11 @@ export default function RewardDisplay({
 }: RewardDisplayProps) {
   const [displayMode, setDisplayMode] = useState<DisplayMode>(variant === 'reveal' ? 'reveal' : 'result');
   const [pickedCard, setPickedCard] = useState<number | null>(null);
+  const acknowledged = useRef(false);
 
   useEffect(() => {
     setPickedCard(null);
+    acknowledged.current = false;
   }, [amount, revealMode, variant]);
 
   useEffect(() => {
@@ -43,15 +45,26 @@ export default function RewardDisplay({
           return;
         }
         setDisplayMode('result');
-      }, revealMode === 'card' ? 1400 : 3600);
+      }, revealMode === 'card' ? 2000 : 3600);
       return () => clearTimeout(timer);
     }
 
     if (displayMode === 'result' && onAcknowledge) {
-      const timer = setTimeout(onAcknowledge, 3000);
+      const timer = setTimeout(() => {
+        if (!acknowledged.current) {
+          acknowledged.current = true;
+          onAcknowledge();
+        }
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [displayMode, onAcknowledge, onRevealComplete, pickedCard, revealMode, variant]);
+
+  const handleAcknowledge = () => {
+    if (acknowledged.current) return;
+    acknowledged.current = true;
+    onAcknowledge?.();
+  };
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -145,7 +158,7 @@ export default function RewardDisplay({
               </div>
 
               <Button
-                onClick={onAcknowledge}
+                onClick={handleAcknowledge}
                 className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-6 text-lg rounded-xl"
               >
                 استلام العيدية

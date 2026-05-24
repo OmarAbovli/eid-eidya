@@ -29,6 +29,8 @@ export function MoneySpinner({
     const selectedAngle = selectedIndex * anglePerItem + anglePerItem / 2;
     const targetRotation = baseSpins - selectedAngle;
 
+    let animationFrameId: number;
+
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / spinDuration, 1);
@@ -37,7 +39,7 @@ export function MoneySpinner({
       setRotation(easeOut * targetRotation);
 
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
       } else {
         setIsSpinning(false);
         setRotation(targetRotation);
@@ -45,7 +47,8 @@ export function MoneySpinner({
       }
     };
 
-    requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrameId);
   }, [amounts, selectedAmount, isSpinning, onAnimationComplete]);
 
   const itemCount = amounts.length;

@@ -23,11 +23,12 @@ export default function CreatePlanForm() {
   const [loading, setLoading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target as any;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
-    }));
+    const target = e.target;
+    const { name, type } = target;
+    const value = type === 'checkbox' ? (target as HTMLInputElement).checked
+      : type === 'number' ? Number((target as HTMLInputElement).value)
+      : target.value;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const toggleDenomination = (denom: number) => {
@@ -117,7 +118,7 @@ export default function CreatePlanForm() {
           name="name"
           value={formData.name}
           onChange={handleInputChange}
-          placeholder="مثال: عيديات رمضان 2024"
+          placeholder="مثال: عيديات العيد الكبير 2024"
           className="border-2 border-amber-200"
           required
         />

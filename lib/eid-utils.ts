@@ -17,7 +17,7 @@ export const egyptianHumor = [
 // الرسائل الاحتفالية
 export const celebrationMessages = [
   'ألف مبروك! استحقيت العيدية دي',
-  'كل عام وأنت بألف خير وحبيبة الله أليف',
+  'كل عام وأنت بألف خير وحب الله ألف',
   'الحمد لله على التوفيق يا بطل',
   'ما شاء الله! إجابة صحيحة جداً',
   'يا إلهي الذكاء ده منين!',
@@ -40,34 +40,10 @@ export const funnyErrorMessages = [
   'فاتتك هاي المرة - حاول تاني',
 ];
 
-// الفئات والقيم المتعلقة بالعيد
-export const easterQuantities = [
-  { value: 5, label: 'خمسة جنيهات' },
-  { value: 10, label: 'عشرة جنيهات' },
-  { value: 20, label: 'عشرين جنيه' },
-  { value: 50, label: 'خمسين جنيه' },
-  { value: 100, label: 'مائة جنيه' },
-  { value: 200, label: 'مائتي جنيه' },
-];
-
 export function getRandomHumor(): string {
   return egyptianHumor[Math.floor(Math.random() * egyptianHumor.length)];
 }
 
 export function getRandomCelebration(): string {
   return celebrationMessages[Math.floor(Math.random() * celebrationMessages.length)];
-}
-
-export function getRandomFunnyError(): string {
-  return funnyErrorMessages[Math.floor(Math.random() * funnyErrorMessages.length)];
-}
-
-export function formatMoney(amount: number): string {
-  return `${amount} جنيه مصري`;
-}
-
-export function getDifficultyByAmount(amount: number): 'easy' | 'medium' | 'hard' {
-  if (amount <= 20) return 'easy';
-  if (amount <= 100) return 'medium';
-  return 'hard';
 }

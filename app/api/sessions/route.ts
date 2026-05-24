@@ -1,10 +1,10 @@
 import { neon } from '@neondatabase/serverless';
+import { randomBytes } from 'crypto';
 
 const sql = neon(process.env.DATABASE_URL!);
 
-// Generate a random session code
 function generateSessionCode(): string {
-  return Math.random().toString(36).substring(2, 8).toUpperCase();
+  return randomBytes(4).toString('hex').toUpperCase();
 }
 
 export async function POST(req: Request) {
@@ -15,17 +15,31 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Plan ID is required' }, { status: 400 });
     }
 
-    // Get plan details
-    const [plan] = await sql.query('SELECT * FROM plans WHERE id = $1', [planId]);
+    const parsedPlanId = parseInt(planId, 10);
+    if (isNaN(parsedPlanId) || parsedPlanId <= 0) {
+      return Response.json({ error: 'Invalid plan ID' }, { status: 400 });
+    }
+
+    const [plan] = await sql.query('SELECT * FROM plans WHERE id = $1', [parsedPlanId]);
     if (!plan) {
       return Response.json({ error: 'Plan not found' }, { status: 404 });
     }
 
-    // Create session
+    // Check total distributed across all sessions for this plan
+    const [budgetResult] = await sql.query(
+      'SELECT COALESCE(SUM(total_distributed), 0) as total_used FROM sessions WHERE plan_id = $1',
+      [parsedPlanId]
+    );
+    const totalUsed = Number(budgetResult.total_used) || 0;
+    const planTotal = Number(plan.total_amount) || 0;
+    if (totalUsed >= planTotal) {
+      return Response.json({ error: 'Plan budget has been fully used' }, { status: 400 });
+    }
+
     const sessionCode = generateSessionCode();
     const [session] = await sql.query(
       'INSERT INTO sessions (plan_id, session_code, status, total_distributed, children_count) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [planId, sessionCode, 'active', 0, 0]
+      [parsedPlanId, sessionCode, 'active', 0, 0]
     );
 
     return Response.json(session, { status: 201 });
@@ -50,7 +64,11 @@ export async function GET(req: Request) {
     }
 
     if (planId) {
-      const sessions = await sql.query('SELECT * FROM sessions WHERE plan_id = $1 ORDER BY created_at DESC', [planId]);
+      const parsedId = parseInt(planId, 10);
+      if (isNaN(parsedId) || parsedId <= 0) {
+        return Response.json({ error: 'Invalid plan ID' }, { status: 400 });
+      }
+      const sessions = await sql.query('SELECT * FROM sessions WHERE plan_id = $1 ORDER BY created_at DESC', [parsedId]);
       return Response.json(sessions);
     }
 

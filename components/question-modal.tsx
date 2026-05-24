@@ -16,12 +16,6 @@ interface Question {
   option_d: string;
 }
 
-const DIFFICULTY_MAP = {
-  easy: 'easy',
-  medium: 'medium',
-  hard: 'hard',
-};
-
 function getDifficultyForAmount(amount: number): 'easy' | 'medium' | 'hard' {
   if (amount >= 200) return 'hard';
   if (amount >= 100) return 'medium';

@@ -34,18 +34,18 @@ export default function GameBoard({ onSheepClick }: GameBoardProps) {
   };
 
   useEffect(() => {
-    // Pulse animation
+    if (pulseIntensity === 0) return;
     const pulseInterval = setInterval(() => {
       setPulseIntensity(prev => (prev + 0.1) % 1);
-    }, 50);
+    }, 200);
 
     return () => clearInterval(pulseInterval);
-  }, []);
+  }, [pulseIntensity]);
 
   return (
     <div className="relative w-full overflow-hidden mb-12">
       {/* Main Game Board */}
-      <div className="relative w-full bg-gradient-to-b from-blue-200 via-sky-100 to-green-150 rounded-3xl border-4 border-amber-400 overflow-hidden shadow-2xl h-96 md:h-[500px]">
+      <div className="relative w-full bg-gradient-to-b from-blue-200 via-sky-100 to-green-200 rounded-3xl border-4 border-amber-400 overflow-hidden shadow-2xl h-96 md:h-[500px]">
         {/* Background decorative elements */}
         <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-sky-200/60 blur-2xl" />
         <div className="absolute -top-12 right-8 w-44 h-44 rounded-full bg-amber-200/70 blur-2xl" />

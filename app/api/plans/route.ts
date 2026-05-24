@@ -13,13 +13,23 @@ export async function GET(req: Request) {
     const params: any[] = [];
 
     if (planId) {
-      params.push(parseInt(planId));
+      const parsedId = parseInt(planId, 10);
+      if (isNaN(parsedId) || parsedId <= 0) {
+        return Response.json({ error: 'Invalid plan ID' }, { status: 400 });
+      }
+      params.push(parsedId);
       query += ' WHERE id = $1';
     } else if (isPublic === 'true') {
       query += ' WHERE is_public = true ORDER BY created_at DESC';
     } else if (userId) {
-      params.push(parseInt(userId));
+      const parsedId = parseInt(userId, 10);
+      if (isNaN(parsedId) || parsedId <= 0) {
+        return Response.json({ error: 'Invalid user ID' }, { status: 400 });
+      }
+      params.push(parsedId);
       query += ' WHERE user_id = $1 ORDER BY created_at DESC';
+    } else {
+      query += ' WHERE is_public = true ORDER BY created_at DESC';
     }
 
     const plans = await sql.query(query, params);
@@ -74,8 +84,18 @@ export async function POST(req: Request) {
       [effectiveUserId, name, totalAmount, numChildren, description, isPublic || false]
     );
 
-    // Insert denominations
-    for (const denom of denominations) {
+    // Validate and insert denominations
+    const validDenoms = denominations
+      .map((d: any) => parseInt(d, 10))
+      .filter((d: number) => !isNaN(d) && d > 0)
+      .filter((d: number, i: number, arr: number[]) => arr.indexOf(d) === i);
+    if (validDenoms.length === 0) {
+      return Response.json({ error: 'No valid denominations provided' }, { status: 400 });
+    }
+    if (validDenoms.length > 20) {
+      return Response.json({ error: 'Too many denominations (max 20)' }, { status: 400 });
+    }
+    for (const denom of validDenoms) {
       await sql.query('INSERT INTO denominations (plan_id, value) VALUES ($1, $2)', [plan.id, denom]);
     }
 

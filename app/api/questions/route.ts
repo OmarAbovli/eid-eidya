@@ -6,7 +6,8 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const difficulty = searchParams.get('difficulty');
-    const limit = searchParams.get('limit') || '100';
+    const limitParam = searchParams.get('limit') || '100';
+    const parsedLimit = parseInt(limitParam, 10);
     const planId = searchParams.get('planId');
     const excludeIdsParam = searchParams.get('excludeIds') || '';
     const excludeIds = excludeIdsParam
@@ -46,7 +47,7 @@ export async function GET(req: Request) {
         ORDER BY RANDOM()
         LIMIT $4
         `,
-        [parseInt(planId), difficulty, excludeIds, parseInt(limit, 10)]
+        [parseInt(planId, 10), difficulty, excludeIds, isNaN(parsedLimit) ? 100 : parsedLimit]
       );
 
       return Response.json(mergedQuestions);
@@ -57,7 +58,7 @@ export async function GET(req: Request) {
       query += ` AND id != ALL($${params.length}::int[])`;
     }
 
-    params.push(parseInt(limit));
+    params.push(isNaN(parsedLimit) ? 100 : parsedLimit);
     query += ` LIMIT $${params.length}`;
 
     const questions = await sql.query(query, params);
@@ -76,6 +77,19 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    const options = [optionA, optionB, optionC, optionD];
+    if (new Set(options).size !== 4) {
+      return Response.json({ error: 'All options must be unique' }, { status: 400 });
+    }
+    if (!options.includes(correctAnswer)) {
+      return Response.json({ error: 'Correct answer must be one of the options' }, { status: 400 });
+    }
+    const validDifficulties = ['easy', 'medium', 'hard'];
+    const level = difficultyLevel || 'medium';
+    if (!validDifficulties.includes(level)) {
+      return Response.json({ error: 'Invalid difficulty level' }, { status: 400 });
+    }
+
     const [question] = await sql.query(
       'INSERT INTO questions (text, correct_answer, option_a, option_b, option_c, option_d, difficulty_level, is_global, plan_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
       [
@@ -85,7 +99,7 @@ export async function POST(req: Request) {
         optionB,
         optionC,
         optionD,
-        difficultyLevel || 'medium',
+        level,
         !planId,
         planId || null,
       ]

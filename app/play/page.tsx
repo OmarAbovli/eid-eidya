@@ -57,13 +57,9 @@ function PlayPageContent() {
     if (activeCode) {
       setSessionCode(activeCode);
       localStorage.setItem('currentSessionCode', activeCode);
-      return;
-    }
-
-    if (!sessionCode) {
+    } else {
       toast.error('كود الجلسة غير صحيح');
       setLoading(false);
-      return;
     }
   }, [searchParams]);
 
@@ -103,16 +99,13 @@ function PlayPageContent() {
   const handleSheepClick = () => {
     if (!plan) return;
 
-    // Select a random denomination from available ones
     const randomDenom = plan.denominations[
       Math.floor(Math.random() * plan.denominations.length)
     ];
     setSelectedDenomination(randomDenom);
-    setRevealHistory((prev) => {
-      const nextMode = pickRevealMode(prev);
-      setRevealMode(nextMode);
-      return [...prev, nextMode].slice(-10);
-    });
+    const nextMode = pickRevealMode(revealHistory);
+    setRevealMode(nextMode);
+    setRevealHistory((prev) => [...prev, nextMode].slice(-10));
     setPhase('reveal');
     setShowQuestion(false);
   };
@@ -124,11 +117,9 @@ function PlayPageContent() {
       if (currentIndex >= 0 && currentIndex < plan!.denominations.length - 1) {
         const nextLowerDenom = plan!.denominations[currentIndex + 1];
         setSelectedDenomination(nextLowerDenom);
-        setRevealHistory((prev) => {
-          const nextMode = pickRevealMode(prev);
-          setRevealMode(nextMode);
-          return [...prev, nextMode].slice(-10);
-        });
+        const nextMode = pickRevealMode(revealHistory);
+        setRevealMode(nextMode);
+        setRevealHistory((prev) => [...prev, nextMode].slice(-10));
         setPhase('reveal');
         setShowQuestion(false);
         toast.error('الإجابة خاطئة. حاول مجدداً بمبلغ أقل');
@@ -160,18 +151,22 @@ function PlayPageContent() {
           }),
         });
 
-        if (!res.ok) throw new Error('API returned ' + res.status);
+        if (!res.ok) {
+          const errBody = await res.json().catch(() => ({}));
+          throw new Error(errBody.error || `API returned ${res.status}`);
+        }
 
         setSession((prev) => {
           if (!prev) return prev;
           return {
             ...prev,
-            total_distributed: prev.total_distributed + selectedDenomination,
+            total_distributed: (Number(prev.total_distributed) || 0) + selectedDenomination,
             children_count: prev.children_count + 1,
           };
         });
       } catch (error) {
         console.error('Error saving reward:', error);
+        toast.error(error instanceof Error ? error.message : 'فشل حفظ العيدية');
       }
     }
   };
@@ -239,7 +234,10 @@ function PlayPageContent() {
             planId={plan.id}
             excludeQuestionIds={usedQuestionIds}
             onQuestionLoaded={(id) => {
-              setUsedQuestionIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
+              setUsedQuestionIds((prev) => {
+                if (prev.includes(id)) return prev;
+                return [...prev, id].slice(-20);
+              });
             }}
           />
         )}
@@ -264,12 +262,12 @@ function PlayPageContent() {
             </div>
             <div>
               <p className="text-amber-700 font-semibold">المبلغ الموزع</p>
-              <p className="text-2xl font-bold text-amber-950">{session.total_distributed} ج.م</p>
+              <p className="text-2xl font-bold text-amber-950">{Number(session.total_distributed) || 0} ج.م</p>
             </div>
             <div>
               <p className="text-amber-700 font-semibold">المبلغ المتبقي</p>
               <p className="text-2xl font-bold text-green-600">
-                {plan.total_amount - session.total_distributed} ج.م
+                {(plan.total_amount - (Number(session.total_distributed) || 0))} ج.م
               </p>
             </div>
           </div>

@@ -23,9 +23,24 @@ export default function SessionsList() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // For now, we'll show a message since we need a userId
-    setLoading(false);
+    fetchSessions();
   }, []);
+
+  const fetchSessions = async () => {
+    try {
+      const response = await fetch('/api/sessions');
+      if (!response.ok) {
+        setLoading(false);
+        return;
+      }
+      const allSessions = await response.json();
+      setSessions(Array.isArray(allSessions) ? allSessions : []);
+    } catch {
+      // No sessions or error
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const copySessionLink = (sessionCode: string) => {
     const link = `${window.location.origin}/play?sessionCode=${sessionCode}`;
