@@ -149,7 +149,7 @@ function PlayPageContent() {
       
       // Save reward to database
       try {
-        await fetch('/api/rewards', {
+        const res = await fetch('/api/rewards', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -159,6 +159,8 @@ function PlayPageContent() {
             status: 'completed',
           }),
         });
+
+        if (!res.ok) throw new Error('API returned ' + res.status);
 
         setSession((prev) => {
           if (!prev) return prev;
